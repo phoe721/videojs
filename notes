@@ -1,3 +1,0 @@
-1. Get subtitle within the video
-ffmpeg -i video_name.mkv video_name.srt
-2. Need to put backward slash in front of spaces for file paths
