@@ -1,4 +1,6 @@
 <?
+	require_once("init.php");
+
 	// Generate time slots
 	function generate_time_slots() {
 		$time_slots = array();
@@ -8,14 +10,17 @@
 			if ($prev != 0) {
 				$cur = rand($prev, $max);
 				$time_slots[$i] = gmdate("H:i:s", $cur);
+				logger("[DEBUG] The $i slot has time " . $time_slots[$i]);
 			} else {
 				$cur = rand(0, $max);
 				$time_slots[$i] = gmdate("H:i:s", $cur);
+				logger("[DEBUG] The $i slot has time " . $time_slots[$i]);
 			}
 
 			$prev = $cur;
 		}
 
+		logger("[NOTICE] Random time slots are generated");
 		return $time_slots;
 	}
 
@@ -27,16 +32,18 @@
 			for ($i = 0; $i < count($time_slots); $i++) {
 				$rid = uniqid();
 				$command = "/usr/bin/ffmpeg -ss " . $time_slots[$i] . " -i $video -y -vframes 1 -q:v 2 " . IMG_DIR . "$rid.jpg";
+				logger("[DEBUG] Screenshot command: $command");
 				$output = exec($command);
 				$screenshots[$i] = "img/$rid.jpg";
 				if (file_exists(IMG_DIR . "$rid.jpg")) {
-					logger("Created screenshot " . $screenshots[$i]);
+					logger("[DEBUG] Created screenshot " . $screenshots[$i]);
 				} else {
-					logger("Failed to create screenshot " . $screenshots[$i]);
+					logger("[ERROR] Failed to create screenshot " . $screenshots[$i]);
 				}
 			}
 		}
 
+		logger("[NOTICE] Movie screenshots are generated");
 		return $screenshots;
 	}
 
@@ -44,14 +51,14 @@
 	function remove_images() {
 		$files = glob(IMG_DIR . '*');
 		$count = count($files);
-		logger("There are $count files in " . IMG_DIR);
+		logger("[DEBUG] There are $count files in " . IMG_DIR);
 		foreach ($files as $file) {
-			logger("Found $file");
+			logger("[DEBUG] Found $file");
 			if (is_file($file)) {
 				if (unlink($file)) {
-					logger("Removed $file");
+					logger("[DEBUG] Removed $file");
 				} else {
-					logger("Failed to remove $file");
+					logger("[ERROR] Failed to remove $file");
 				}
 			}
 		}
@@ -59,25 +66,31 @@
 
 		$files = glob(IMG_DIR . '*');
 		$count = count($files);
-		logger("There are $count files in " . IMG_DIR);
+		logger("[DEBUG] There are $count files in " . IMG_DIR);
 		if ($count == 0) {
+			logger("[DEBUG] All screenshots are removed");
 			return true;
 		} else {
+			logger("[ERROR] Failed to remove screenshots");
 			return false;
 		}
 	}
 
-	// Log to logfile
+	// Logger
 	function logger($msg) {
-		// Write to log
-		$file = fopen(LOG_FILE, 'a+');
-		if ($file) {
-			$timestring = date('Y-m-d h:i:s', strtotime('now'));
-			$msg = $timestring . ' - ' . $msg . PHP_EOL;
-			fwrite($file, $msg);
-		} else {
-			fwrite($file, "[ERROR] Unable to open file!");
+		if (LOG_LEVEL == 0) {
+		} elseif (LOG_LEVEL == 1) {
+			$file = fopen(LOG_FILE, 'a+');
+			if ($file) {
+				$timestring = date('Y-m-d h:i:s', strtotime('now'));
+				$msg = $timestring . $msg . PHP_EOL;
+				fwrite($file, $msg);
+			} else {
+				$timestring = date('Y-m-d h:i:s', strtotime('now'));
+				$msg = $timestring . "[ERROR] Unable to open $file" . PHP_EOL;
+				fwrite($file, $msg);
+			}
+			fclose($file);
 		}
-		fclose($file);
 	}
 ?>

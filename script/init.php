@@ -10,4 +10,5 @@
 	define('LOG_FILE', ROOT . 'log/videojs.log');
 	define('MAX_TIME', 1000);
 	define('NUM_OF_SCREENSHOTS', 4);
+	define('LOG_LEVEL', 1); // 0 - None, 1 - Debug
 ?>
