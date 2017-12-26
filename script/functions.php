@@ -18,7 +18,7 @@
 	function generate_time_slots($duration) {
 		$time_slots = array();
 		$prev = $cur = 0;
-		$duration = $duration - 600;
+		$duration = $duration - 600; // Remove movie endings
 		for ($i = 0; $i < NUM_OF_SCREENSHOTS; $i++) {
 			if ($prev != 0) {
 				$cur = rand($prev, $duration);
