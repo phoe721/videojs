@@ -32,7 +32,12 @@ $(document).ready(function() {
 			}, "json");
 
 			myPlayer.pause();
-			myPlayer.addRemoteTextTrack(caption);
+			myPlayer.addRemoteTextTrack(caption, true);
+			let tracks = myPlayer.textTracks();
+			for (let i = 0; i < tracks.length; i++) {
+				let track = tracks[i];
+				if (track.kind === 'captions' && track.language === 'en') track.mode = 'showing';
+			}
 			myPlayer.src(video);
 			myPlayer.load();
 			//myPlayer.play();
