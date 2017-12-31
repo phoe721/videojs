@@ -19,12 +19,28 @@ $(document).ready(function() {
 		if (this.value) {
 			var video = this.value;
 			var subtitle = video.replace('mp4', 'vtt');
-			let caption = {
-				kind: 'captions',
-				srclang: 'en',
-				label: 'English',
-				src: subtitle
-			};
+			$.ajax({
+				url: subtitle,
+				type: 'HEAD',
+				error: function() {
+					console.log('Subtitle does not exist!');
+				},
+				success: function() {
+					let caption = {
+						kind: 'captions',
+						srclang: 'en',
+						label: 'English',
+						src: subtitle
+					};
+					myPlayer.addRemoteTextTrack(caption, true);
+					let tracks = myPlayer.textTracks();
+					for (let i = 0; i < tracks.length; i++) {
+						let track = tracks[i];
+						if (track.kind === 'captions' && track.language === 'en') track.mode = 'showing';
+					}
+				}
+			});
+
 			$.post('script/index.php', {video: video}, function(data) { 
 				for (var i = 0; i < data.length; i++) {
 					$("#screenshots").append("<img src='" + data[i] + "' width='320px'>");
@@ -32,12 +48,6 @@ $(document).ready(function() {
 			}, "json");
 
 			myPlayer.pause();
-			myPlayer.addRemoteTextTrack(caption, true);
-			let tracks = myPlayer.textTracks();
-			for (let i = 0; i < tracks.length; i++) {
-				let track = tracks[i];
-				if (track.kind === 'captions' && track.language === 'en') track.mode = 'showing';
-			}
 			myPlayer.src(video);
 			myPlayer.load();
 			//myPlayer.play();
