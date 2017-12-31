@@ -1,18 +1,11 @@
 var path = "videos/";
-var fileExt1 = ".mp4";
-var fileExt2 = ".vtt";
+var fileExt = ".mp4";
 $(document).ready(function() {
     $.ajax({
         url: path,
         contentType: "application/x-www-form-urlencoded;charset=utf-8",
         success: function(data) {
-            $(data).find("a:contains(" + fileExt1 + ")").each(function() {
-                var filename = $(this).text();
-                var filepath = encodeURI(path + filename);
-                $("#file-list").append("<option value=" + filepath + ">" + filename + "</option>");
-            });
-
-            $(data).find("a:contains(" + fileExt2 + ")").each(function() {
+            $(data).find("a:contains(" + fileExt + ")").each(function() {
                 var filename = $(this).text();
                 var filepath = encodeURI(path + filename);
                 $("#file-list").append("<option value=" + filepath + ">" + filename + "</option>");
