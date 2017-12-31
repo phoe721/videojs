@@ -1,6 +1,6 @@
 var path = "videos/";
 var fileExt1 = ".mp4";
-var fileExt2 = ".mkv";
+var fileExt2 = ".vtt";
 $(document).ready(function() {
     $.ajax({
         url: path,
@@ -25,6 +25,13 @@ $(document).ready(function() {
 		$("#screenshots").empty();
 		if (this.value) {
 			var video = this.value;
+			var subtitle = video.replace('mp4', 'vtt');
+			let caption = {
+				kind: 'captions',
+				srclang: 'en',
+				label: 'English',
+				src: subtitle
+			};
 			$.post('script/index.php', {video: video}, function(data) { 
 				for (var i = 0; i < data.length; i++) {
 					$("#screenshots").append("<img src='" + data[i] + "' width='320px'>");
@@ -32,6 +39,7 @@ $(document).ready(function() {
 			}, "json");
 
 			myPlayer.pause();
+			myPlayer.addRemoteTextTrack(caption);
 			myPlayer.src(video);
 			myPlayer.load();
 			//myPlayer.play();
