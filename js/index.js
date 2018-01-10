@@ -18,7 +18,7 @@ $(document).ready(function() {
 		$("#screenshots").empty();
 		if (this.value) {
 			var video = this.value;
-			var subtitle = video.replace('mp4', 'vtt');
+			var subtitle = decodeURI("videos/sub/" + baseName(video)) + ".vtt";
 			$.ajax({
 				url: subtitle,
 				type: 'HEAD',
@@ -54,3 +54,10 @@ $(document).ready(function() {
 		}
     });
 });
+
+function baseName(str) {
+	var base = new String(str).substring(str.lastIndexOf('/') + 1); 
+	if (base.lastIndexOf(".") != -1)       
+		base = base.substring(0, base.lastIndexOf("."));
+	return base;
+}
