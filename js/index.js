@@ -5,6 +5,7 @@ $(document).ready(function() {
         url: path,
         contentType: "application/x-www-form-urlencoded;charset=utf-8",
         success: function(data) {
+			console.log(data);
             $(data).find("a:contains(" + fileExt + ")").each(function() {
                 var filename = $(this).text();
                 var filepath = encodeURI(path + filename);
