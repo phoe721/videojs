@@ -19,7 +19,7 @@ $(document).ready(function() {
 		$("#screenshots").empty();
 		if (this.value) {
 			var video = this.value;
-			var subtitle = decodeURI("videos/sub/" + baseName(video)) + ".vtt";
+			var subtitle = decodeURI("videos/subs/" + baseName(video)) + ".vtt";
 			$.ajax({
 				url: subtitle,
 				type: 'HEAD',
