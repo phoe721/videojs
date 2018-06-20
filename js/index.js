@@ -5,7 +5,6 @@ $(document).ready(function() {
         url: path,
         contentType: "application/x-www-form-urlencoded;charset=utf-8",
         success: function(data) {
-			console.log(data);
             $(data).find("a:contains(" + fileExt + ")").each(function() {
                 var filename = $(this).text();
                 var filepath = encodeURI(path + filename);
@@ -17,6 +16,8 @@ $(document).ready(function() {
     var myPlayer = videojs('my-video');
     $('select').on('change', function() {
 		$("#screenshots").empty();
+		myPlayer.pause();
+		myPlayer.src('');
 		if (this.value) {
 			var video = this.value;
 			var subtitle = decodeURI("videos/subs/" + baseName(video)) + ".vtt";
