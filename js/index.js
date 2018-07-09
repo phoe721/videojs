@@ -7,7 +7,7 @@ $(document).ready(function() {
 		myPlayer.reset();
 		if (this.value) {
 			var video = this.value;
-			var subtitle = decodeURI("videos/subs/" + baseName(video)) + ".vtt";
+			var subtitle = decodeURI("subs/" + baseName(video)) + ".vtt";
 			showScreenShots(video);
 			setupSubtitle(myPlayer, subtitle);
 			myPlayer.pause();

@@ -5,7 +5,7 @@
 	error_reporting(E_ALL);
 
 	/* Constants */
-	define('ROOT', '/var/www/html/phoe721.com/project/videojs/');
+	define('ROOT', '/var/www/phoe721.com/project/videojs/');
 	define('IMG_DIR', ROOT . 'img/');
 	define('LOG_FILE', ROOT . 'log/videojs.log');
 	define('NUM_OF_SCREENSHOTS', 4);
